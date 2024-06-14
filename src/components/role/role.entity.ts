@@ -14,8 +14,8 @@ export class Role {
   name: string = "";
 
   @OneToMany(() => User, (user: User) => user.role)
-  users: User[] = [];
+  users!: User[];
 
   @OneToMany(() => Permission, (permission) => permission.role)
-  permissions: Permission[] = [];
+  permissions!: Permission[];
 }

@@ -36,8 +36,8 @@ export class User {
   tenant!: Tenant;
 
   @OneToMany(() => Permission, (permission: Permission) => permission.user)
-  permissions: Permission[] = [];
+  permissions!: Permission[];
 
   @ManyToMany(() => Product, (product) => product.users)
-  products: Product[] = [];
+  products!: Product[];
 }

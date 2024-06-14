@@ -13,5 +13,5 @@ export class Tenant {
   name: string = "";
 
   @OneToMany(() => User, (user) => user.tenant)
-  users: User[] = [];
+  users!: User[];
 }

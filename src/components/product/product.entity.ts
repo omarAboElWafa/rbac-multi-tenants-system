@@ -28,5 +28,5 @@ export class Product {
 
   @ManyToMany(() => User, (user) => user.products)
   @JoinTable()
-  users: User[] = [];
+  users!: User[];
 }
