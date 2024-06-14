@@ -12,6 +12,8 @@
         "skipLibCheck": true,
         "useUnknownInCatchVariables": false,
         "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
         "baseUrl": ".",
         "paths": {
             "*": ["node_modules/*"],
