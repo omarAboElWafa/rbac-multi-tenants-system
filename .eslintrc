@@ -8,7 +8,7 @@
   ],
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
-    "prettier/prettier": ["error", { "endOfLine": "lf" }],
+    "prettier/prettier": ["error", { "endOfLine": "lf"}],
     "linebreak-style": ["error", "unix"]
   },
   "env": {
