@@ -1,0 +1,37 @@
+version: "3.8"
+
+services:
+  express-api:
+    build:
+      context: .
+      args:
+        NODE_ENV: development # Default to development if NODE_ENV is not set
+      dockerfile: Dockerfile
+    ports:
+      - 4242:3000
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/dist
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    env_file:
+      - .env
+    restart: on-failure
+
+  postgresql:
+    image: postgres:13
+    hostname: postgresql
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    restart: on-failure
+
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    restart: on-failure
+volumes:
+  postgres_data:
