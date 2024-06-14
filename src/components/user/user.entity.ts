@@ -4,10 +4,12 @@ import {
   Column,
   OneToMany,
   ManyToOne,
+  ManyToMany,
 } from "typeorm";
 import { Permission } from "../permission/permission.entity";
 import { Role } from "../role/role.entity";
 import { Tenant } from "../tenant/tenant.entity";
+import { Product } from "../product/product.entity";
 
 @Entity()
 export class User {
@@ -35,4 +37,7 @@ export class User {
 
   @OneToMany(() => Permission, (permission: Permission) => permission.user)
   permissions: Permission[] = [];
+
+  @ManyToMany(() => Product, (product) => product.users)
+  products: Product[] = [];
 }
