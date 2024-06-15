@@ -1,0 +1,2961 @@
+{
+	"info": {
+		"_postman_id": "605deb5c-7389-4a18-960e-167ebcaa8cfe",
+		"name": "RBAC Multi-tenat System API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17178333"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Ghaker\",\r\n    \"email\" : \"jamide4124@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/register",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Bad Request 400: email is Required",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Ghaker\",\r\n    // \"email\" : \"jamide4124@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4242/v1/users/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4242",
+									"path": [
+										"v1",
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "68"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"44-AfH9DNUNMYqPpmrKzMy91rhenzo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:30:39 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"email is Required\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Success 201: User created / signup",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Ghaker\",\r\n    \"email\" : \"jamide4124@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/users/register",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"users",
+										"register"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "128"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"80-4V98AZ8Kr8qWeHgbJZw66j9nnto\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:31:18 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"name\": \"Ghaker\",\n    \"email\": \"jamide4124@cosb.com\",\n    \"password\": \"$2a$12$TzLL0PKE5RFv4iN7FsHdIOSHIB55anQtlFVe/xKVksLkeLZwfq1Ky\"\n}"
+						}
+					]
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Check if there is a response\r",
+									"if (pm.response && pm.response.json) {\r",
+									"    try {\r",
+									"        // Parse the response body as JSON\r",
+									"        const responseBody = pm.response.json();\r",
+									"\r",
+									"        // Check if the accessToken field is present in the response\r",
+									"        if (responseBody && responseBody.accessToken) {\r",
+									"            // Extract the accessToken from the response body\r",
+									"            const accessToken = responseBody.accessToken;\r",
+									"            console.log(accessToken);\r",
+									"            // Set the environment variable \"access\" with the extracted accessToken\r",
+									"            pm.collectionVariables.set(\"access\", accessToken);\r",
+									"        } else {\r",
+									"            console.error(\"accessToken not found in the response\");\r",
+									"        }\r",
+									"    } catch (error) {\r",
+									"        console.error(\"Error parsing response as JSON:\", error.message);\r",
+									"    }\r",
+									"} else {\r",
+									"    console.error(\"No response received\");\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"hassan@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success 200: Logged in successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"jamide4124@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:4242/v1/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4242",
+									"path": [
+										"v1",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "310"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"136-YCzXMYF0Y2Skyv6F24iuK2cmH6E\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:32:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"accessToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4NDM2NzY4LCJleHAiOjE3MTg0NDAzNjh9.c4Z-aB842BV7RMEPuH6ndG2cMAG51dsabQKGcBjn0BE\",\n    \"refreshToken\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4NDM2NzY4LCJleHAiOjE3MTg1MjMxNjh9.EsKSxGlUvH4P7XnvpSyYJx0TrJLop2aPU9Gexie5VJI\"\n}"
+						},
+						{
+							"name": "401 Unauthorized: email is not registered",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"jamide4124@csb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434%\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/users/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "42"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"2a-gIwjvCfeomJGj6L5LJgkpveqJCA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:34:17 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"This email is not registered\"\n}"
+						},
+						{
+							"name": "401 Unauthorized : Wrong password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\" : \"jamide4124@cosb.com\",\r\n    \"password\" : \"Asa$ddsdfdfa5434\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/users/login",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"users",
+										"login"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-1DgWgAxsia6W2YD8mP0Sbp4yZkI\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:38:57 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Wrong password\"\n}"
+						}
+					]
+				},
+				{
+					"name": "logout user",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 success: logout user successful",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/users/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"users",
+										"logout"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-vYmtThEV0qgPmOaoi5WLoJuDA80\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:44:19 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Logout successful\"\n}"
+						},
+						{
+							"name": "401 Unauthorized: Invalid Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/users/logout",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"users",
+										"logout"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-XPgscITk84w43ywYiTvnfsylmD0\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 07:59:51 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid Access Token\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Get the user own profile",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "401 Unauthorized: Invalid Access Token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:4242/v1/users/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "4242",
+									"path": [
+										"v1",
+										"users",
+										"me"
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-XPgscITk84w43ywYiTvnfsylmD0\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 08:02:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invalid Access Token\"\n}"
+						}
+					]
+				},
+				{
+					"name": "update own profile",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"AbdElAziz\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/update-profile",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"update-profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refresh acess token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTg5ZGZlOTY2ODM0YWI4NWFiZGM3YTUiLCJJQSI6ZmFsc2UsImlhdCI6MTcwODY5NTQwMCwiZXhwIjoxNzA4NzgxODAwfQ.k0mxEY3jyik81saASmv_0Np7sh_6gH1k_dk1sx4Y8EQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users/refresh-token",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"refresh-token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "assign user to tenant",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/:id/tenants/:tenantId/assign",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								":id",
+								"tenants",
+								":tenantId",
+								"assign"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "user's Id"
+								},
+								{
+									"key": "tenantId",
+									"value": "5",
+									"description": "tenant's Id"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "grant User Permission",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/users/:id/permissions/:permissionName/grant",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"users",
+								":id",
+								"permissions",
+								":permissionName",
+								"grant"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "user's Id"
+								},
+								{
+									"key": "permissionName",
+									"value": "assistant"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "change the current password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGVkMmVlODk0YzdhZDE4NTVmYjQ0MmUiLCJpYXQiOjE2OTMyNjU2NjQsImV4cCI6MTY5MzI2OTI2NH0.pdqbMwZ50pt9qNABITaXbV9aBw5MUja-cbPVUYRIVds",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"oldPassword\" : \"asa$ddsdfdfa5434%\",\r\n    \"newPassword\" : \"asa$ddsdfdfa5435%\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/change-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"change-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "forgot password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // issue otp request to this email\r\n    \"email\": \"omar@saro.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/forgot-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"forgot-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "reset password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    // pass the otp along with the email to verift ownership of the email so that (set new password)\r\n    \"email\":\"omar@saro.com\",\r\n    \"otp\": \"442679\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/reset-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"reset-password"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NTJiMmNmMDIwMDQwOGM1Zjg3ZjM4ZTciLCJpYXQiOjE2OTc5MzQxNzQsImV4cCI6MTY5NzkzNzc3NH0.8UB34oFiLOXvN9vRKXLoUFd87jbEW3KxsziHuTmn480",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set new password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NGVjYWNmNWViM2M4YjMyMDdhOWE1ZmYiLCJpYXQiOjE2OTMyMzc1MjMsImV4cCI6MTY5MzI0MTEyM30.Umja7QiVV1XqqNnfOqdIb0LTes7y9_vU6YIZ1qnMIbE",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"newPassword\" : \"asa$ddsdfdfa5435%\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/users/set-new-password",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users",
+								"set-new-password"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tenant",
+			"item": [
+				{
+					"name": "Add new Tenant",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"name\": \"Warlo\"  //Tenant name (string),\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/tenants/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success 200:  Tenant added successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"name\": \"T&N\"  //Tenant name (string),\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "30"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1e-804bwn2Qf8pPxovK3yTMhNmQ5LY\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:10:09 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"T&N\"\n    }\n}"
+						},
+						{
+							"name": "400 Bad Request: Invalid request payload",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"name\": \"T&\"  //Tenant name (string),\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-IZyZpy2kMy7r2rh+UE98elk4zeE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:14:29 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"name is String must contain at least 3 character(s)\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400 Bad Request: Required data missed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n//    \"name\": \"T&N\"  //Tenant name (string),\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										""
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "67"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"43-X9JLOtZF1fLZm4EpOrDqGeUBu5I\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:15:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"name is Required\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "get all tenants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/tenants/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"tenants",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Success 200: Get all tenants",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "82"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"52-0A4l6+EpC/vIczTkY9n+weBbUyc\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:40:11 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"T&N\"\n        },\n        {\n            \"id\": 5,\n            \"name\": \"Sharkia\"\n        },\n        {\n            \"id\": 6,\n            \"name\": \"Warlo\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "get tenant by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/tenants/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"tenants",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5",
+									"description": "Tenant's ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "404 Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "25",
+											"description": "Tenant's ID"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ySzqCdyB2XXYqSzdFc62RNtqcBw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:50:33 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Tenant not found\"\n}"
+						},
+						{
+							"name": "200 Success: get one tenant",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5",
+											"description": "Tenant's ID"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "34"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"22-C4ngXHmrU4veN8DJiZ2jjQps37Q\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:51:13 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"name\": \"Sharkia\"\n    }\n}"
+						},
+						{
+							"name": "400 Bad Request: missing ID parameter",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "",
+											"description": "Tenant's ID"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "65"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"41-L+fxh/nnXIZvWJSWJJxkgNzd2Co\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 10:59:10 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"id is Required\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "400 Bad Request: invalid id param type",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "sa",
+											"description": "Tenant's ID"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "89"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"59-3HjHrON8mE1ohnwzc88jU+nbGyQ\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:17:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"id is Expected number, received string\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "update tenant by ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\" : \"Warloo\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/tenants/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"tenants",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "404 Not Found Tenant",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Warloo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "25"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ySzqCdyB2XXYqSzdFc62RNtqcBw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:34:41 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Tenant not found\"\n}"
+						},
+						{
+							"name": "200 Success updating tenant",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Warloo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "33"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"21-Ce9HWenVsgjfdN+eQAnZNbLZ0OU\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:35:48 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 5,\n        \"name\": \"Warloo\"\n    }\n}"
+						},
+						{
+							"name": "400 Bad Request",
+							"originalRequest": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\" : \"Wa\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "5"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "102"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"66-IZyZpy2kMy7r2rh+UE98elk4zeE\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:36:31 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"name is String must contain at least 3 character(s)\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "delete tenant by ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/tenants/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"tenants",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "6"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "404: Not Found",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "25"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "28"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1c-ySzqCdyB2XXYqSzdFc62RNtqcBw\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:52:43 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Tenant not found\"\n}"
+						},
+						{
+							"name": "400 Bad Request - Invalid params",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "sda"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "86"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"56-K6Y3QdGuosOB6Zc34I0PPicvY6E\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:53:26 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"error\": \"Invalid data\",\n    \"details\": [\n        {\n            \"message\": \"id is Expected number, received nan\"\n        }\n    ]\n}"
+						},
+						{
+							"name": "Success 200: Deleted Tenant",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/tenants/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"tenants",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "41"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"29-lXikuMsCBHZxxCIf2gJ2xsN/Hb8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 11:54:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Tenant deleted successfully\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Products - Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Success:  No Products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "40"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"28-IZxkVdAlF6KTmE1DKsrBvahz5co\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:28:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"List of products\",\n    \"data\": []\n}"
+						},
+						{
+							"name": "200 Success: List of Products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "287"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"11f-VvBl+HXla+1YNbNSHIO1OErpf5I\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:33:36 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"List of products\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"Salmon\",\n            \"description\": \"Lorem Ipsum Solarno\",\n            \"price\": \"25.00\",\n            \"createdAt\": \"2024-06-15T16:31:35.862Z\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"Koshary\",\n            \"description\": \"Lorem Ipsum Solarno SH Warko narmo\",\n            \"price\": \"15.00\",\n            \"createdAt\": \"2024-06-15T16:33:24.909Z\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Product - Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Product ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "404 Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "255",
+											"description": "Product ID"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-Zkgaox/LmBaRs1Ofkuc8bu8COvo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:39:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product not found\"\n}"
+						},
+						{
+							"name": "200 Success - get one product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2",
+											"description": "Product ID"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "166"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"a6-uV/1KVBhE4oefB6jFx91SEVVRwM\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:42:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product found\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Koshary\",\n        \"description\": \"Lorem Ipsum Solarno SH Warko narmo\",\n        \"price\": \"15.00\",\n        \"createdAt\": \"2024-06-15T16:33:24.909Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Product - Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Koshary\",//\"string\"\r\n  \"description\": \"Lorem Ipsum Solarno SH Warko narmo\" ,//\"string\"\r\n  \"price\": 15 //\"number\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Success: Product created",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Salmon\",//\"string\"\r\n  \"description\": \"Lorem Ipsum Solarno\" ,//\"string\"\r\n  \"price\": 25 //\"number\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "147"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"93-ad+DQ+MWiJ7GLhhVf9TRn4LGXqs\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:31:35 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product created\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"Salmon\",\n        \"description\": \"Lorem Ipsum Solarno\",\n        \"price\": 25,\n        \"createdAt\": \"2024-06-15T16:31:35.862Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Product - Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tuna\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Product's ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Product - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "21",
+									"description": "Product's ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Roles - Get All",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"roles",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 Success - No Roles",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/roles/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"roles",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "37"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"25-1smqyI5jdsGxbGE6C5W95nHujDk\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 17:15:52 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"List of roles\",\n    \"data\": []\n}"
+						},
+						{
+							"name": "Roles - Get All",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/roles/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"roles",
+										""
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "93"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"5d-ahMwRjpuZFuEd5fWvqkT08rI7AA\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 17:19:02 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"List of roles\",\n    \"data\": [\n        {\n            \"id\": 1,\n            \"name\": \"maintainer\"\n        },\n        {\n            \"id\": 2,\n            \"name\": \"assistant\"\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Product - Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/products/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"products",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Product ID"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "404 Not Found",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "255",
+											"description": "Product ID"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "31"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"1f-Zkgaox/LmBaRs1Ofkuc8bu8COvo\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:39:25 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product not found\"\n}"
+						},
+						{
+							"name": "200 Success - get one product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/{{api_version}}/products/:id",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"products",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "2",
+											"description": "Product ID"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "166"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"a6-uV/1KVBhE4oefB6jFx91SEVVRwM\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 16:42:22 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product found\",\n    \"data\": {\n        \"id\": 2,\n        \"name\": \"Koshary\",\n        \"description\": \"Lorem Ipsum Solarno SH Warko narmo\",\n        \"price\": \"15.00\",\n        \"createdAt\": \"2024-06-15T16:33:24.909Z\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Role- Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"assistant\"//\"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/roles/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"roles",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "200 success - role created successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"maintainer\"//\"string\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/{{api_version}}/roles/",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"{{api_version}}",
+										"roles",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Powered-By",
+									"value": "Express"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Content-Length",
+									"value": "75"
+								},
+								{
+									"key": "ETag",
+									"value": "W/\"4b-BEnv5ftPeNeee2N9hd4a2Krk9T8\""
+								},
+								{
+									"key": "Date",
+									"value": "Sat, 15 Jun 2024 17:18:00 GMT"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Role created successfully\",\n    \"data\": {\n        \"id\": 1,\n        \"name\": \"maintainer\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Product - Update",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"assistant-1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/{{api_version}}/roles/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "2",
+									"description": "Role's ID"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Role - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/{{api_version}}/roles/:id",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"{{api_version}}",
+								"roles",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "21",
+									"description": "Role's ID"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": "http://localhost:4242",
+			"type": "string"
+		},
+		{
+			"key": "api_version",
+			"value": "v1",
+			"type": "string"
+		},
+		{
+			"key": "access",
+			"value": ""
+		}
+	]
+}
