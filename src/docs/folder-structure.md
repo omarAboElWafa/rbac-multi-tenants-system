@@ -9,84 +9,107 @@
 |    ├── server.ts
 |    ├── index.ts
 |    ├── components
-|    │   └── identity
-|    │   |    ├── identity.controller.ts
-|    │   |    ├── identity.model.ts
-|    │   |    ├── identity.module.ts
-|    │   |    ├── identity.router.ts
-|    │   |    └── identity.service.ts
-|    │   |
-|    |   └── user
+|    │   └── user
 |    │   |    ├── user.controller.ts
-|    │   |    ├── user.model.ts
+|    │   |    ├── user.entity.ts
 |    │   |    ├── user.module.ts
 |    │   |    ├── user.router.ts
 |    │   |    └── user.service.ts
 |    │   |
 |    |   └── tenant
-|    │       ├── tenant.controller.ts
-|    │       ├── tenant.model.ts
-|    │       ├── tenant.module.ts
-|    │       ├── tenant.router.ts
-|    │       └── tenant.service.ts
+|    │   |    ├── tenant.controller.ts
+|    │   |    ├── tenant.entity.ts
+|    │   |    ├── tenant.module.ts
+|    │   |    ├── tenant.router.ts
+|    │   |    └── tenant.service.ts
+|    │   |_ permissions
+|    │   |    ├── permissions.controller.ts
+|    │   |    ├── permissions.entity.ts
+|    │   |    ├── permissions.module.ts
+|    │   |    ├── permissions.router.ts
+|    │   |    └── permissions.service.ts
+|    │   |
+|    |   └── product
+|    │   |    ├── product.controller.ts
+|    │   |    ├── product.entity.ts
+|    │   |    ├── product.module.ts
+|    │   |    ├── product.router.ts
+|    │   |    └── product.service.ts
+|    │   |
+|    |   └── role
+|    │       ├── role.controller.ts
+|    │       ├── role.entity.ts
+|    │       ├── role.module.ts
+|    │       ├── role.router.ts
+|    │       └── role.service.ts
 |    │
 |    |
 |    ├── config
-|    │   ├── config.ts
-|    │   ├── constants.ts
+|    │   ├── data-source.ts
+|    │   ├── entities.ts
 |    │   ├── env.ts
-|    │   ├── index.ts
-|    │   └── logger.ts
+|    │   ├── role.ts
+|    │   └── logger.ts (future)
 |    │
 |    ├── middlewares
 |    │   ├── auth.ts
-|    │   ├── error.ts
+|    │   ├── authorization.ts
 |    │   ├── index.ts
 |    │   └── validation.ts
 |    │
 |    ├── contracts
-|    │   ├── errors.ts
-|    │   ├── mailer.ts
-|    │   ├── pagination.ts
+|    │   ├── permissions.ts
+|    │   ├── product.ts
+|    │   ├── pagination.ts  (future)
 |    │   ├── user.ts
 |    │   |── tenant.ts    
-|    │   └── identity.ts
+|    │   └── mailer.ts   (future)
 |    │
 |    ├── docs
 |    │   ├── folder-structure.md
 |    │   └── README.md   
 |    |
-|    ├── core
-|    │   ├── IRepository.ts
-|    │   └── DataBaseConnection.ts
+|    ├── libs
+|    │   ├── schemas
+|    │   |   ├── user.ts
+|    │   |   ├── tenant.ts
+|    │   |   ├── role.ts
+|    │   |   ├── permissions.ts
+|    │   |   └── shared.ts
+|    │   |   └── product.ts
+|    │   |
+|    │   └── cache.ts
 |    |
 |    ├── loaders
 |    │    |
 |    |    ├── v1
 |    │    |   └── routes.ts
-|    │    └── index.ts
+|    │    └── index.ts  (future)
 |    │
 |    └── utils
-|        ├── cache.ts
-|        ├── config.ts
-|        ├── helpers.ts
-|        ├── hooks.ts
-|        ├── loggers.ts
-|        ├── mailService.ts
-|        ├── middlewares.ts
-|        └── sms.ts
+|        ├── ApiError.ts
+|        ├── ApiResponse.ts  (future)
+|        ├── cryptoHelpers.ts
+|        ├── hooks.ts  (future)
+|        ├── loggers.ts  (future)
+|        ├── mailService.ts (future)
+|        └── sms.ts (future)
 |
 |
 ├── .env
 ├── .env.example
 ├── .gitignore
 ├── .prettierrc
+├── .prettierignore
+├── .prettierrc.json
+├── .editorconfig
 ├── .eslintrc
+├── .eslintignore
 ├── docker-compose.yml
 ├── Dockerfile
 ├── README.md
 ├── tsconfig.json
-└── eslintignore
+└── LICENSE
 
 </pre>
 </span>
