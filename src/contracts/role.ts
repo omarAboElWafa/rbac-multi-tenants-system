@@ -5,3 +5,7 @@ export interface Role {
   name: string;
   users: IUser[];
 }
+
+export interface IRoleInputDTO {
+  name: string;
+}
