@@ -1,14 +1,29 @@
+import { Repository } from "typeorm";
 import { User } from "./user.entity";
-import { AppDataSource } from "../../config/data-source";
+import { Tenant } from "../tenant/tenant.entity";
+import { Permission } from "../permission/permission.entity";
+import { Role } from "../role/role.entity";
 import * as cache from "../../libs/cache";
 import { REFRESH_TOKEN_EXPIRY_FOR_CACHE } from "../../config/env";
 import { hashPassword } from "../../utils/cryptoHelpers";
 import { IUserInputDTO } from "@/contracts/user";
 
-class IdentityService {
+class UserService {
   private userRepository;
-  constructor() {
-    this.userRepository = AppDataSource.getRepository(User);
+  private tenantRepository;
+  private roleRepository;
+  private permissionRepository;
+
+  constructor(
+    userRepository: Repository<User>,
+    tenantRepository: Repository<Tenant>,
+    roleRepository: Repository<Role>,
+    permissionRepository: Repository<Permission>,
+  ) {
+    this.userRepository = userRepository;
+    this.tenantRepository = tenantRepository;
+    this.roleRepository = roleRepository;
+    this.permissionRepository = permissionRepository;
   }
 
   async addUser(user: IUserInputDTO): Promise<User> {
@@ -46,6 +61,50 @@ class IdentityService {
 
   async deleteUser(id: number): Promise<void> {
     await this.userRepository.delete(id);
+  }
+
+  assignToTenant = async (userId: number, tenantId: number) => {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user) throw new Error("User not found");
+
+    const tenant = await this.tenantRepository.findOne({
+      where: { id: tenantId },
+    });
+    if (!tenant) throw new Error("Tenant not found");
+
+    user.tenant = tenant;
+    await this.userRepository.save(user);
+
+    return true;
+  };
+
+  async grantUserPermission(
+    userId: number,
+    permissionName: string,
+  ): Promise<void> {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ["role"],
+    });
+    if (!user) throw new Error("User not found");
+
+    const role = user.role;
+    if (!role) throw new Error("Role not found");
+
+    let permission = await this.permissionRepository.findOne({
+      where: { name: permissionName, role: role },
+    });
+    if (!permission) {
+      permission = this.permissionRepository.create({
+        name: permissionName,
+        role: role,
+        user: user,
+      });
+    }
+
+    await this.permissionRepository.save(permission);
   }
 
   //token related methods
@@ -111,4 +170,4 @@ class IdentityService {
   };
 }
 
-export default IdentityService;
+export default UserService;

@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import UserService from "./user.service";
+import TenantService from "../tenant/tenant.service";
 import * as helpers from "../../utils/cryptoHelpers";
 // import { handleValidationError } from "../../utils/loggers";
 import { IUserInputDTO } from "@/contracts/user";
@@ -13,8 +14,10 @@ import {
 
 class UserController {
   userService: UserService;
-  constructor(UserService: UserService) {
-    this.userService = UserService;
+  tenantService: TenantService;
+  constructor(userService: UserService, tenantService: TenantService) {
+    this.userService = userService;
+    this.tenantService = tenantService;
   }
 
   register = async (req: Request, res: Response) => {
@@ -133,6 +136,50 @@ class UserController {
     } catch (error) {
       console.log(error);
       return res.status(400).send(error);
+    }
+  };
+
+  assignToTenant = async (req: Request, res: Response) => {
+    try {
+      const { id, tenantId } = req.params;
+      const tenant = await this.tenantService.getTenant(parseInt(tenantId));
+      if (!tenant) {
+        return res.status(404).send({ message: "Invalid tenant" });
+      }
+      const assigned = await this.userService.assignToTenant(
+        parseInt(id),
+        parseInt(tenantId),
+      );
+      if (!assigned) {
+        return res
+          .status(500)
+          .send({ message: "Something went wrong when assigning user" });
+      }
+      return res
+        .status(200)
+        .send({ message: "User assigned to tenant successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).send(error);
+    }
+  };
+
+  grantUserPermission = async (req: Request, res: Response) => {
+    try {
+      const { userId, permissionName } = req.body;
+      await this.userService.grantUserPermission(
+        parseInt(userId),
+        permissionName,
+      );
+      return res
+        .status(200)
+        .send({ message: "Permission granted to user successfully" });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send({
+        message: "Something went wrong when granting permission",
+        error,
+      });
     }
   };
 

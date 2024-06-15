@@ -9,8 +9,8 @@ import UserController from "./user.controller";
 
 class UserRouter {
   userController: UserController;
-  constructor(UserController: UserController) {
-    this.userController = UserController;
+  constructor(userController: UserController) {
+    this.userController = userController;
   }
   getRouter = () => {
     const router = Router();
@@ -27,6 +27,18 @@ class UserRouter {
     );
     router.get("/logout", [verifyAccessToken], this.userController.logout);
     router.get("/me", [verifyAccessToken], this.userController.me);
+    // assign user to a tenant
+    router.post(
+      "/:id/tenants/:tenantId/assign",
+      [verifyAccessToken],
+      this.userController.assignToTenant,
+    );
+    // assign user to a role
+    router.post(
+      "/:id/permissions/:permissionName/grant",
+      [verifyAccessToken],
+      this.userController.grantUserPermission,
+    );
     // router.patch(
     //   "/profile",
     //   [verifyAccessToken],
