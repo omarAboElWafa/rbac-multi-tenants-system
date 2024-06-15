@@ -1,4 +1,10 @@
-export const roles = [
+export interface RoleAccess {
+  name: string;
+  permissions: string[];
+  modules: string[];
+}
+
+export const roles: RoleAccess[] = [
   {
     name: "admin",
     permissions: [

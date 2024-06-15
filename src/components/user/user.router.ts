@@ -1,5 +1,9 @@
 import { Router } from "express";
 import { verifyAccessToken } from "../../middlewares/auth";
+import {
+  authorizeRole,
+  authorizePermission,
+} from "../../middlewares/authorization";
 import { validateData } from "../../middlewares/validation";
 import {
   userRegisterationSchema,
@@ -36,7 +40,7 @@ class UserRouter {
     // assign user to a role
     router.post(
       "/:id/permissions/:permissionName/grant",
-      [verifyAccessToken],
+      [verifyAccessToken, authorizeRole(["admin"]), authorizePermission()],
       this.userController.grantUserPermission,
     );
     // router.patch(
