@@ -1,8 +1,8 @@
 import { Role } from "./role";
-import { User } from "./user";
+import { IUser } from "./user";
 
 export interface Permission {
   id: number;
   role: Role;
-  user: User;
+  user: IUser;
 }

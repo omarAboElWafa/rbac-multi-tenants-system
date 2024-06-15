@@ -1,7 +1,7 @@
-import { User } from "./user";
+import { IUser } from "./user";
 
 export interface Role {
   id: number;
   name: string;
-  users: User[];
+  users: IUser[];
 }
