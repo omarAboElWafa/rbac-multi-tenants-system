@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { IAuthTokenSigner } from "@/domain/auth-token-signer";
 import { HASH_SALT_ROUNDS } from "../config/env";
 import { IUser } from "@/contracts/user";
 
@@ -15,11 +15,5 @@ export const comparePassword = async (
   return await bcrypt.compare(password, hashedPassword);
 };
 
-export const generateAuthToken = async (
-  user: IUser,
-  secret: string,
-  expiresIn: string,
-) => {
-  const token = jwt.sign({ id: user.id }, secret, { expiresIn: expiresIn });
-  return token;
-};
+export const generateAuthToken = (user: IUser, tokenSigner: IAuthTokenSigner) =>
+  tokenSigner.signToken({ id: user.id });

@@ -5,12 +5,12 @@ import * as helpers from "../../utils/cryptoHelpers";
 // import { handleValidationError } from "../../utils/loggers";
 import { IUserInputDTO } from "@/contracts/user";
 import {
-  JWT_SECRET,
   ACCESS_TOKEN_EXPIRY,
   ACCESS_TOKEN_EXPIRY_FOR_CACHE,
   REFRESH_TOKEN_EXPIRY,
   REFRESH_TOKEN_EXPIRY_FOR_CACHE,
 } from "../../config/env";
+import { JwtTokenSigner } from "@/infrastructure/jwt-token-signer";
 
 class UserController {
   userService: UserService;
@@ -53,16 +53,11 @@ class UserController {
         return res.status(401).send({ message: "Wrong password" });
       }
 
-      const accessToken = await helpers.generateAuthToken(
-        user,
-        JWT_SECRET,
-        ACCESS_TOKEN_EXPIRY,
-      );
-      const refreshToken = await helpers.generateAuthToken(
-        user,
-        JWT_SECRET,
-        REFRESH_TOKEN_EXPIRY,
-      );
+      const accessTokenSigner = new JwtTokenSigner(ACCESS_TOKEN_EXPIRY);
+      const accessToken = helpers.generateAuthToken(user, accessTokenSigner);
+
+      const refreshTokenSigner = new JwtTokenSigner(REFRESH_TOKEN_EXPIRY);
+      const refreshToken = helpers.generateAuthToken(user, refreshTokenSigner);
 
       // Check if the user's refresh token is blacklisted
       const isBlacklisted = await this.userService.isRefreshTokenBlacklisted(
@@ -229,7 +224,7 @@ class UserController {
   //     if (!user) {
   //       return res.status(404).send({ message: "User not found" });
   //     }
-  //     const newAccessToken = await helpers.generateAuthToken(
+  //     const newAccessToken = helpers.generateAuthToken(
   //       user,
   //       JWT_SECRET,
   //       ACCESS_TOKEN_EXPIRY,
@@ -319,7 +314,7 @@ class UserController {
   //     if (retrievedOtp !== otp) {
   //       return res.status(401).send({ message: "Invalid OTP" });
   //     }
-  //     const accessToken = await helpers.generateAuthToken(
+  //     const accessToken = helpers.generateAuthToken(
   //       user,
   //       JWT_SECRET,
   //       ACCESS_TOKEN_EXPIRY,
