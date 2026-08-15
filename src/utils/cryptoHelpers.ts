@@ -16,4 +16,8 @@ export const comparePassword = async (
 };
 
 export const generateAuthToken = (user: IUser, tokenSigner: IAuthTokenSigner) =>
-  tokenSigner.signToken({ id: user.id });
+  tokenSigner.signToken({
+    id: user.id,
+    tenantId: user.tenant.id,
+    role: user.role.name,
+  });

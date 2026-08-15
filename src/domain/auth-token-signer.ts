@@ -1,3 +1,5 @@
+import { AuthTokenClaims } from "./auth-token";
+
 export interface IAuthTokenSigner {
-  signToken(userPayload: { id: number }): string;
+  signToken(claims: AuthTokenClaims): string;
 }

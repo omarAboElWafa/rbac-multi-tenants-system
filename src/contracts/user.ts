@@ -1,4 +1,6 @@
+import { Role } from "@/components/role/role.entity";
 import { Permission } from "./permission";
+import { ITenant } from "./tenant";
 
 export interface IUser {
   id: number;
@@ -6,6 +8,8 @@ export interface IUser {
   email: string;
   password: string;
   permissions: Permission[];
+  role: Role;
+  tenant: ITenant;
 }
 
 export interface IUserInputDTO {

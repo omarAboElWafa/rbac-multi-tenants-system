@@ -40,7 +40,10 @@ class UserService {
   }
 
   findUserByEmail = async (email: string) => {
-    return await this.userRepository.findOne({ where: { email: email } });
+    return await this.userRepository.findOne({
+      where: { email: email },
+      relations: ["role", "tenant"],
+    });
   };
 
   findUserById = async (id: number): Promise<User | null> => {
