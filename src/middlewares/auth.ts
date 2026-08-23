@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../config/env";
 import * as cache from "../libs/cache";
+import { StatusCodes } from "http-status-codes";
 
 export const verifyAccessToken = async (
   req: Request,
@@ -12,17 +13,23 @@ export const verifyAccessToken = async (
     ? req.headers.authorization
     : "";
   if (!authHeader) {
-    return res.status(401).send({ message: "No Access Token provided" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send({ message: "No Access Token provided" });
   }
   const token = authHeader.split(" ")[1];
   if (!token) {
-    return res.status(401).send({ message: "Invalid Access Token" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send({ message: "Invalid Access Token" });
   }
   try {
     const decodedToken = jwt.verify(token, JWT_SECRET);
     const { id } = decodedToken as { id: number };
     if (!id) {
-      return res.status(401).send({ message: "Invalid Access Token" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ message: "Invalid Access Token" });
     }
     // check if the access token is in redis
     const cacheTokenClient = cache.tokenClientPool;
@@ -31,13 +38,17 @@ export const verifyAccessToken = async (
       `access-${id}`,
     );
     if (!cacheAccessValue || cacheAccessValue !== token) {
-      return res.status(401).send({ message: "Invalid Access Token" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ message: "Invalid Access Token" });
     }
     req.body.userId = id;
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).send({ message: "Invalid Access Token" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send({ message: "Invalid Access Token" });
   }
 };
 
@@ -46,28 +57,34 @@ export const verifyRefreshToken = (
   res: Response,
   next: NextFunction,
 ) => {
-  const authHeader: string = req.headers.authorization
-    ? req.headers.authorization
-    : "";
-  if (!authHeader) {
-    return res.status(401).send({ message: "No Access Token provided" });
+  if (!req.context) {
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).send({
+      message: "An unexpected error occurred while processing your request.",
+    });
   }
-  const refreshToken = authHeader.split(" ")[1];
+  const { authorization } = req.context;
+  const refreshToken = authorization?.split(" ")[1];
   if (!refreshToken) {
-    return res.status(401).send({ message: "Invalid Access Token" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send({ message: "Invalid Access Token" });
   }
   try {
     const decodedToken = jwt.verify(refreshToken, JWT_SECRET);
     const { id } = decodedToken as { id: number };
     if (!id) {
-      return res.status(401).send({ message: "Invalid Refresh Token" });
+      return res
+        .status(StatusCodes.UNAUTHORIZED)
+        .send({ message: "Invalid Refresh Token" });
     }
     req.body.userId = id;
     req.body.clientRefreshToken = refreshToken;
     next();
   } catch (error) {
     console.log(error);
-    return res.status(401).send({ message: "Invalid Refresh Token" });
+    return res
+      .status(StatusCodes.UNAUTHORIZED)
+      .send({ message: "Invalid Refresh Token" });
   }
 };
 

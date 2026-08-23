@@ -1,23 +1,23 @@
 {
-    "compilerOptions": {
-        "target": "ES2020",
-        "module": "nodenext",
-        "rootDir": "./src",
-        "resolveJsonModule": true, 
-        "outDir": "./dist",
-        "esModuleInterop": true,
-        "forceConsistentCasingInFileNames": true,
-        "strict": true,
-        "noImplicitAny": true,
-        "skipLibCheck": true,
-        "useUnknownInCatchVariables": false,
-        "moduleResolution": "nodenext",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "paths": {
-            "@/*": ["./src/*"],
-        },
-    },
-    "include": ["src/**/*.ts"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "nodenext",
+    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "useUnknownInCatchVariables": false,
+    "moduleResolution": "nodenext",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*.ts", "types/**/*"],
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }
